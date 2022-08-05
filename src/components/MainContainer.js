@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar";
 
 function MainContainer() {
   const [stockData, setstockData] = useState([])
+  // const [stocksToDisplay, setStocksToDisplay] = useState([])
   const [filterType, setFilterType] = useState("Tech")
   const [sortBy, setSortBy] = useState("")
   const [myPortfolio, setMyportfolio] = useState([])
@@ -12,7 +13,7 @@ function MainContainer() {
   useEffect(() => {
     fetch(" http://localhost:3001/stocks")
     .then(res => res.json())
-    .then(data => setstockData(data))
+    .then(data => setstockData(data)) 
   }, [])
 
   function handleSetFilterType(filterType){
@@ -24,17 +25,26 @@ function MainContainer() {
   }
 
   function handleSetMyPortfolio(stockToAdd){
-    setMyportfolio({
+    setMyportfolio([
       ...myPortfolio,
       stockToAdd
-    })
+    ])
   }
 
-const stocksToDisplay = stockData.filter(stock => {
-  if(filterType !== "") {
-    return stock.type === filterType
+  function handleRemovePortfolio(stockToRemove) {
+    console.log(stockToRemove)
+    setMyportfolio(myPortfolio.filter(stock => {
+      return stock.id !== stockToRemove.id
+    }))
   }
-})
+
+  const stocksToDisplay = stockData.filter(stock => {
+    if(filterType !== "") {
+      return stock.type === filterType
+    } else {
+      return true
+    }
+  })
 
 // const upDateStocksToDisplay = () => {
 //   const stocks = stockData
@@ -55,7 +65,7 @@ const stocksToDisplay = stockData.filter(stock => {
           <StockContainer stocksToDisplay={stocksToDisplay} setMyPortfolio={handleSetMyPortfolio}/>
         </div>
         <div className="col-4">
-          <PortfolioContainer myStocksToDisplay={myPortfolio}/>
+          <PortfolioContainer myStocksToDisplay={myPortfolio} setMyPortfolio={handleRemovePortfolio}/>
         </div>
       </div>
     </div>

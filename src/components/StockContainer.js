@@ -6,7 +6,7 @@ function StockContainer( {stocksToDisplay, setMyPortfolio} ) {
     <div>
       <h2>Stocks</h2>
       {/* render stock list here*/}
-      { stocksToDisplay.map(stock => { return <Stock key={stock.ticker} stockInfo={stock} onStockAddToPortfolio={setMyPortfolio}/>}) }
+      { stocksToDisplay.map(stock => { return <Stock key={stock.ticker} stockInfo={stock} setMyPortfolio={setMyPortfolio}/>}) }
     </div>
   );
 }
